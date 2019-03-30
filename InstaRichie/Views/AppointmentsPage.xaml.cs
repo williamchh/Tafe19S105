@@ -121,7 +121,7 @@ namespace StartFinance.Views
                 {
                     conn.CreateTable<Appointments>();
                     var query1 = conn.Table<Appointments>();
-                    var query3 = conn.Query<Appointments>("DELETE FROM Appointments WHERE AppointmentName ='" + AccSelection + "'");
+                    var query3 = conn.Query<Appointments>("DELETE FROM Appointments WHERE EventName ='" + AccSelection + "'");
                     AppointmentsListView.ItemsSource = query1.ToList();
                 }
             }
