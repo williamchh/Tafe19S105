@@ -131,5 +131,51 @@ namespace StartFinance.Views
                 await dialog.ShowAsync();
             }
         }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            Results();
+            SaveIcon.Visibility = Visibility.Collapsed;
+            EditIcon.Visibility = Visibility.Collapsed;
+        }
+
+        private void AppointmentsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            EditIcon.Visibility = Visibility.Visible;
+            DeleteIcon.Visibility = Visibility.Collapsed;
+        }
+
+        private void EditData(object sender, RoutedEventArgs e)
+        {
+            SaveIcon.Visibility = Visibility.Visible;
+            AddIcon.Visibility = Visibility.Collapsed;
+        }
+
+        private async void SaveData(object sender, RoutedEventArgs e)
+        {
+            {
+                try
+                {
+                    string AccSelection = ((Appointments)AppointmentsListView.SelectedItem).EventName;
+                    if (AccSelection == "")
+                    {
+                        MessageDialog dialog = new MessageDialog("Not selected the Item", "Oops..!");
+                        await dialog.ShowAsync();
+                    }
+                    else
+                    {
+                        conn.CreateTable<Appointments>();
+                        var query1 = conn.Table<Appointments>();
+                        var query3 = conn.Query<Appointments>("UPDATE FROM Appointments WHERE EventName ='" + AccSelection + "'");
+                        AppointmentsListView.ItemsSource = query1.ToList();
+                    }
+                }
+                catch (NullReferenceException)
+                {
+                    MessageDialog dialog = new MessageDialog("Not selected the Item", "Oops..!");
+                    await dialog.ShowAsync();
+                }
+            }
+        }
     }
 }

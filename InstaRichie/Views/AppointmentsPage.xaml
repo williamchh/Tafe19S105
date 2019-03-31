@@ -95,8 +95,11 @@
 
             <!--  secondary commands  -->
             <controls:PageHeader.PrimaryCommands>
-                <AppBarButton Icon="Add" Label="Add Appointment" Click="AddData" />
-                <AppBarButton Icon="Delete" Label="Delete Appointment" Click="DeleteAppointment_Click" />
+                <AppBarButton x:Name="AddIcon" Icon="Add" Label="Add Appointment" Click="AddData" Visibility="Visible" />
+                <AppBarButton x:Name="SaveIcon" Icon="Save" Label="Save Appointment" Click="SaveData" Visibility="Collapsed" />
+                <AppBarButton x:Name="DeleteIcon" Icon="Delete" Label="Delete Appointment" Click="DeleteAppointment_Click" Visibility="Visible" />
+                <AppBarButton x:Name="EditIcon" Icon="Edit" Label="Edit Appointment" Click="EditData" Visibility="Collapsed" />
+
             </controls:PageHeader.PrimaryCommands>
 
         </controls:PageHeader>
@@ -134,7 +137,7 @@
                     </StackPanel>
                     <ListView x:Name="AppointmentsListView" Grid.ColumnSpan="3" Grid.Row="2" HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
-                                ItemTemplate="{StaticResource AppointmentsListDataViews}">
+                                ItemTemplate="{StaticResource AppointmentsListDataViews}" SelectionChanged="AppointmentsListView_SelectionChanged">
                         <RelativePanel.Below>pageStart</RelativePanel.Below>
                     </ListView>
                 </Grid>
