@@ -45,6 +45,7 @@ namespace StartFinance.Views
     {
         SQLiteConnection conn; // adding an SQLite connection
         string path = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "Findata.sqlite");
+        Appointments a1 = new Appointments();
 
         public AppointmentsPage()
         {
@@ -143,12 +144,18 @@ namespace StartFinance.Views
         {
             EditIcon.Visibility = Visibility.Visible;
             DeleteIcon.Visibility = Visibility.Collapsed;
+            a1 = (Appointments)AppointmentsListView.SelectedItem;
         }
 
         private void EditData(object sender, RoutedEventArgs e)
         {
             SaveIcon.Visibility = Visibility.Visible;
             AddIcon.Visibility = Visibility.Collapsed;
+            EventNameText.Text = a1.EventName;
+            LocationText.Text = a1.Location;
+            EventDatePick.Date = a1.EventDate;
+            StartTimePick.Time = a1.StartTime;
+            EndTimePick.Time = a1.EndTime;
         }
 
         private async void SaveData(object sender, RoutedEventArgs e)
@@ -164,10 +171,22 @@ namespace StartFinance.Views
                     }
                     else
                     {
+                        a1.EventName = EventNameText.Text;
+                        a1.Location = LocationText.Text;
+                        a1.EventDate = EventDatePick.Date.DateTime;
+                        a1.StartTime = StartTimePick.Time;
+                        a1.EndTime = EndTimePick.Time;
                         conn.CreateTable<Appointments>();
+                        var qr = conn.Update(a1);
                         var query1 = conn.Table<Appointments>();
-                        var query3 = conn.Query<Appointments>("UPDATE FROM Appointments WHERE EventName ='" + AccSelection + "'");
+                        //var query3 = conn.Query<Appointments>("UPDATE FROM Appointments WHERE EventName ='" + AccSelection + "'");
                         AppointmentsListView.ItemsSource = query1.ToList();
+                        AddIcon.Visibility = Visibility.Visible;
+                        DeleteIcon.Visibility = Visibility.Visible;
+                        SaveIcon.Visibility = Visibility.Collapsed;
+                        EditIcon.Visibility = Visibility.Collapsed;
+                        EventNameText.Text = "";
+                        LocationText.Text = "";
                     }
                 }
                 catch (NullReferenceException)
