@@ -24,7 +24,6 @@
                     <TextBlock Text="{Binding ID}" Padding="0,0,15,0"/>
                     <TextBlock Text="{Binding FirstName}" Padding="0,0,15,0"/>
                     <TextBlock Text="{Binding LastName}" Padding="0,0,15,0"/>
-                    <TextBlock Text="{Binding OverDraft}" Padding="0,0,15,0"/>
                     <TextBlock Text="{Binding CompanyName}" Padding="0,0,15,0"/>
                     <TextBlock Text="{Binding MobilePhone}" Padding="0,0,15,0"/>
                 </StackPanel>
@@ -65,7 +64,7 @@
 
         <controls:PageHeader x:Name="pageHeader" RelativePanel.AlignLeftWithPanel="True"
 			RelativePanel.AlignRightWithPanel="True"
-			RelativePanel.AlignTopWithPanel="True" Text="Add/Remove Accounts">
+			RelativePanel.AlignTopWithPanel="True" Text="Add/Remove Contacts">
 
             <!--  secondary commands  -->
             <controls:PageHeader.SecondaryCommands>
@@ -81,8 +80,9 @@
 
             <!--  secondary commands  -->
             <controls:PageHeader.PrimaryCommands>
-                <AppBarButton x:Name="addAppBtn" Icon="Add" Label="Add Account" Click="AddItemButton_Click" />
-                <AppBarButton x:Name="deleteAppBtn" Icon="Delete" Label="Delete Account" Click="DeleteItem_Click" />
+                <AppBarButton x:Name="addAppBtn" Icon="Add" Label="Add Contact" Click="AddItemButton_Click" />
+                <AppBarButton x:Name="saveAppBtn" Icon="Save" Label="Save Contact" Click="saveAppBtn_Click" IsEnabled="False"/>
+                <AppBarButton x:Name="deleteAppBtn" Icon="Delete" Label="Delete Contact" Click="DeleteItem_Click" />
             </controls:PageHeader.PrimaryCommands>
         </controls:PageHeader>
 
@@ -90,7 +90,7 @@
         <Pivot>
             <RelativePanel.Below>pageHeader</RelativePanel.Below>
             <RelativePanel.Above>pageFooter</RelativePanel.Above>
-            <PivotItem Header="Accounts">
+            <PivotItem Header="Contacts">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="185"/>
@@ -106,7 +106,7 @@
 
                     </StackPanel>
                     <ListView x:Name="ContactListView" Grid.Row="1" ItemTemplate="{StaticResource ContactListView}"
-                              HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,67,0,0">
+                              HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,67,0,0" SelectionChanged="ContactsListView_SelctionChanged">
                         <RelativePanel.Below>PageStart</RelativePanel.Below>
                     </ListView>
                 </Grid>

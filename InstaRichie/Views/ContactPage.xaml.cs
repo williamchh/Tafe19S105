@@ -27,7 +27,8 @@ namespace StartFinance.Views
     {
         SQLiteConnection conn; // adding an SQLite connection
         string path = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "Findata.sqlite");
-
+        Contacts c1 = new Contacts();
+        bool isUpdate = false;
         public ContactPage()
         {
             this.InitializeComponent();
@@ -112,6 +113,46 @@ namespace StartFinance.Views
             {
                 MessageDialog dialog = new MessageDialog("No item selected.");
                 await dialog.ShowAsync();
+            }
+        }
+        private void saveAppBtn_Click(object sender, RoutedEventArgs e)
+        {
+            c1.FirstName = fNameTxtBox.Text;
+            c1.LastName = lnameTxtBox.Text;
+            c1.CompanyName = companyNameTxtBox.Text;
+            c1.MobilePhone = mobilePhoneTxtBox.Text;
+
+            isUpdate = true;
+
+            var qr = conn.Update(c1);
+            var query1 = conn.Table<Contacts>();
+
+            ContactListView.ItemsSource = query1.ToList();
+
+            saveAppBtn.IsEnabled = false;
+            addAppBtn.IsEnabled = true;
+            deleteAppBtn.IsEnabled = true;
+
+            ContactListView.SelectedValue = -1;
+        }
+
+        private void ContactsListView_SelctionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            saveAppBtn.IsEnabled = true;
+            addAppBtn.IsEnabled = false;
+            deleteAppBtn.IsEnabled = false;
+            
+            c1 = ContactListView.SelectedItem as Contacts;
+            if (!isUpdate)
+            {
+                fNameTxtBox.Text = c1.FirstName;
+                lnameTxtBox.Text = c1.LastName;
+                companyNameTxtBox.Text = c1.CompanyName;
+                mobilePhoneTxtBox.Text = c1.MobilePhone;
+            }
+            else
+            {
+                isUpdate = false;
             }
         }
     }
