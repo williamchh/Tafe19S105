@@ -34,6 +34,7 @@ using SQLite;
 using StartFinance.Models;
 using Windows.UI.Popups;
 using SQLite.Net;
+using System.Globalization;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -44,6 +45,7 @@ namespace StartFinance.Views
     /// </summary>
     public sealed partial class PersonalPage : Page
     {
+        Personal p1 = new Personal();
         SQLiteConnection conn; // adding an SQLite connection
         string path = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "Findata.sqlite");
 
@@ -79,7 +81,8 @@ namespace StartFinance.Views
                 tbxEmail.Text = query.ToList()[0].Email;
                 tbxMobile.Text = query.ToList()[0].MobileNumber;
                 cldDOB.Date = query.ToList()[0].DOB;
-                tbxID.Text = query.ToList()[0].PersonalID.ToString();
+                //tbxID.Text = query.ToList()[0].PersonalID.ToString();
+                p1 = (Personal) query.ToList()[0];
             }
         }
 
@@ -169,23 +172,30 @@ namespace StartFinance.Views
 
         private void SaveAccout_Click(object sender, RoutedEventArgs e)
         {
-            int id = int.Parse(tbxID.Text);
-            //string fName = tbxFirstName.Text;
-            //string lName = tbxLastName.Text;
-            //string mb = tbxMobile.Text;
-            //string em = tbxEmail.Text;
-            //var dt = DateTime.Parse(cldDOB.Date.ToString());
+            //int id = int.Parse(tbxID.Text);
+            CultureInfo provider = CultureInfo.InvariantCulture;
+            string fName = tbxFirstName.Text;
+            string lName = tbxLastName.Text;
+            string mb = tbxMobile.Text;
+            string em = tbxEmail.Text;
+            // var dtt = DateTime.Parse(cldDOB.Date.Value.ToString(), "mm/dd/yyyy");
 
+            var date = cldDOB.Date;
+            DateTime dt = date.Value.DateTime;
 
-            conn.CreateTable<Personal>();
-            var query1 = conn.Table<Personal>();
-            var query2 = conn.Query<Personal>("DELETE FROM Personal WHERE PersonalID = '" + id + "'");
-
-            PersonalInsert();
-            //var query = conn.Query<Personal>("UPDATE Personal SET FirstName = '" + fName + "', LastName = '" + lName + "', Email = '" + em + "', MobileNumber = '" + mb + "', DOB = '" + dt + "' WHERE PersonalID = '" + id + "'");
+            p1.FirstName = tbxFirstName.Text;
+            p1.LastName = tbxLastName.Text;
+            p1.DOB = dt;
+            p1.Email = tbxEmail.Text;
+            p1.MobileNumber = tbxMobile.Text;
+            
+            var qr = conn.Update(p1);
             var query = conn.Table<Personal>();
+            
+
+
             PersonalInfoListView.ItemsSource = query.ToList();
-            tbxID.Text = query.ToList()[0].PersonalID.ToString();
+            //tbxID.Text = query.ToList()[0].PersonalID.ToString();
 
             btnAdd.Visibility = Visibility.Visible;
             btnSave.Visibility = Visibility.Collapsed;

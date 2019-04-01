@@ -109,7 +109,7 @@
                         <CalendarDatePicker x:Name="cldDOB" Header="Date of Birth" IsEnabled="false" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                         <TextBox x:Name="tbxEmail" PlaceholderText="Email" IsReadOnly="True" TextWrapping="Wrap" InputScope="Number" Header="Email"/>
                         <TextBox x:Name="tbxMobile" PlaceholderText="Mobile" IsReadOnly="True" TextWrapping="Wrap" InputScope="Number" Header="Mobile"/>
-                        <TextBox x:Name="tbxID" Visibility="Collapsed" />
+                        <!--<TextBox x:Name="tbxID" Visibility="Collapsed" />-->
                     </StackPanel>
                     <ListView x:Name="PersonalInfoListView" Grid.Row="1" HorizontalAlignment="Stretch"
 								VerticalAlignment="Stretch"
