@@ -112,7 +112,7 @@ namespace StartFinance.Views
         {
             try
             {
-                string AccSelection = ((Appointments)AppointmentsListView.SelectedItem).EventName;
+                string AccSelection = ((Appointments)AppointmentsListView.SelectedItem).ID.ToString();
                 if (AccSelection == "")
                 {
                     MessageDialog dialog = new MessageDialog("Not selected the Item", "Oops..!");
@@ -122,7 +122,7 @@ namespace StartFinance.Views
                 {
                     conn.CreateTable<Appointments>();
                     var query1 = conn.Table<Appointments>();
-                    var query3 = conn.Query<Appointments>("DELETE FROM Appointments WHERE EventName ='" + AccSelection + "'");
+                    var query3 = conn.Query<Appointments>("DELETE FROM Appointments WHERE ID ='" + AccSelection + "'");
                     AppointmentsListView.ItemsSource = query1.ToList();
                 }
             }
@@ -143,7 +143,7 @@ namespace StartFinance.Views
         private void AppointmentsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             EditIcon.Visibility = Visibility.Visible;
-            DeleteIcon.Visibility = Visibility.Collapsed;
+            //DeleteIcon.Visibility = Visibility.Collapsed;
             a1 = (Appointments)AppointmentsListView.SelectedItem;
         }
 
@@ -160,40 +160,38 @@ namespace StartFinance.Views
 
         private async void SaveData(object sender, RoutedEventArgs e)
         {
+            try
             {
-                try
-                {
-                    string AccSelection = ((Appointments)AppointmentsListView.SelectedItem).EventName;
-                    if (AccSelection == "")
-                    {
-                        MessageDialog dialog = new MessageDialog("Not selected the Item", "Oops..!");
-                        await dialog.ShowAsync();
-                    }
-                    else
-                    {
-                        a1.EventName = EventNameText.Text;
-                        a1.Location = LocationText.Text;
-                        a1.EventDate = EventDatePick.Date.DateTime;
-                        a1.StartTime = StartTimePick.Time;
-                        a1.EndTime = EndTimePick.Time;
-                        conn.CreateTable<Appointments>();
-                        var qr = conn.Update(a1);
-                        var query1 = conn.Table<Appointments>();
-                        //var query3 = conn.Query<Appointments>("UPDATE FROM Appointments WHERE EventName ='" + AccSelection + "'");
-                        AppointmentsListView.ItemsSource = query1.ToList();
-                        AddIcon.Visibility = Visibility.Visible;
-                        DeleteIcon.Visibility = Visibility.Visible;
-                        SaveIcon.Visibility = Visibility.Collapsed;
-                        EditIcon.Visibility = Visibility.Collapsed;
-                        EventNameText.Text = "";
-                        LocationText.Text = "";
-                    }
-                }
-                catch (NullReferenceException)
+                string AccSelection = ((Appointments)AppointmentsListView.SelectedItem).EventName;
+                if (AccSelection == "")
                 {
                     MessageDialog dialog = new MessageDialog("Not selected the Item", "Oops..!");
                     await dialog.ShowAsync();
                 }
+                else
+                {
+                    a1.EventName = EventNameText.Text;
+                    a1.Location = LocationText.Text;
+                    a1.EventDate = EventDatePick.Date.DateTime;
+                    a1.StartTime = StartTimePick.Time;
+                    a1.EndTime = EndTimePick.Time;
+                    //conn.CreateTable<Appointments>();
+                    var qr = conn.Update(a1);
+                    var query1 = conn.Table<Appointments>();
+                    //var query3 = conn.Query<Appointments>("UPDATE Appointments SET EventName ='" + EventNameText.Text + "', Location ='" + LocationText.Text + "', EventDate ='" + EventDatePick.Date.DateTime + "', StartTime ='" + StartTimePick.Time + "', EndTime ='" + EndTimePick.Time + "' WHERE ID ='" + AccSelection + "'");
+                    AppointmentsListView.ItemsSource = query1.ToList();
+                    AddIcon.Visibility = Visibility.Visible;
+                    DeleteIcon.Visibility = Visibility.Visible;
+                    SaveIcon.Visibility = Visibility.Collapsed;
+                    EditIcon.Visibility = Visibility.Collapsed;
+                    EventNameText.Text = "";
+                    LocationText.Text = "";
+                }
+            }
+            catch (NullReferenceException)
+            {
+                MessageDialog dialog = new MessageDialog("Not selected the Item", "Oops..!");
+                await dialog.ShowAsync();
             }
         }
     }

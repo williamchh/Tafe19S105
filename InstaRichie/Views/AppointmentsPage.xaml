@@ -28,7 +28,7 @@
         <DataTemplate x:Key="AppointmentsListDataViews">
             <Grid>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding AppointmentID}" Padding="0,0,15,0"/>
+                    <TextBlock Text="{Binding ID}" Padding="0,0,15,0"/>
                     <TextBlock Text="{Binding EventName}" Padding="0,0,15,0"/>
                     <TextBlock Text="{Binding Location}" Padding="0,0,15,0"/>
                     <TextBlock Text="{Binding EventDate}" Padding="0,0,15,0"/>
