@@ -106,7 +106,12 @@ namespace StartFinance.Views
                     conn.CreateTable<Contacts>();
                     var query1 = conn.Table<Contacts>();
                     var query2 = conn.Query<Contacts>("DELETE FROM Contacts WHERE ID =" + ContactSelection);
+                    isUpdate = true;
                     ContactListView.ItemsSource = query1.ToList();
+
+                    saveAppBtn.IsEnabled = false;
+                    addAppBtn.IsEnabled = true;
+                    deleteAppBtn.IsEnabled = true;
                 }
             }
             catch (NullReferenceException)
@@ -140,7 +145,6 @@ namespace StartFinance.Views
         {
             saveAppBtn.IsEnabled = true;
             addAppBtn.IsEnabled = false;
-            deleteAppBtn.IsEnabled = false;
             
             c1 = ContactListView.SelectedItem as Contacts;
             if (!isUpdate)
